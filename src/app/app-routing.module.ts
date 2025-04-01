@@ -5,12 +5,12 @@ import { GuestComponent } from './theme/layout/guest/guest.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'admin',
     component: AdminComponent,
     children: [
       {
         path: '',
-        redirectTo: '/default',
+        redirectTo: '',
         pathMatch: 'full'
       },
       {

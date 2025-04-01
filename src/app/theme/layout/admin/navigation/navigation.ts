@@ -27,7 +27,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Dashboard',
         type: 'item',
         classes: 'nav-item',
-        url: '/default',
+        url: '/admin/default',
         icon: 'ti ti-dashboard',
         breadcrumbs: false
       }
@@ -49,7 +49,7 @@ export const NavigationItems: NavigationItem[] = [
             id: 'login',
             title: 'Login',
             type: 'item',
-            url: '/login',
+            // url: '/login',
             target: true,
             breadcrumbs: false
           },
@@ -57,7 +57,7 @@ export const NavigationItems: NavigationItem[] = [
             id: 'register',
             title: 'Register',
             type: 'item',
-            url: '/register',
+            // url: '/register',
             target: true,
             breadcrumbs: false
           }
@@ -76,7 +76,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Typography',
         type: 'item',
         classes: 'nav-item',
-        url: '/typography',
+        url: '/admin/typography',
         icon: 'ti ti-typography'
       },
       {
@@ -84,18 +84,8 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Colors',
         type: 'item',
         classes: 'nav-item',
-        url: '/color',
+        url: '/admin/color',
         icon: 'ti ti-brush'
-      },
-      {
-        id: 'tabler',
-        title: 'Tabler',
-        type: 'item',
-        classes: 'nav-item',
-        url: 'https://tabler-icons.io/',
-        icon: 'ti ti-plant-2',
-        target: true,
-        external: true
       }
     ]
   },
@@ -109,19 +99,9 @@ export const NavigationItems: NavigationItem[] = [
         id: 'sample-page',
         title: 'Sample Page',
         type: 'item',
-        url: '/sample-page',
+        url: '/admin/sample-page',
         classes: 'nav-item',
         icon: 'ti ti-brand-chrome'
-      },
-      {
-        id: 'document',
-        title: 'Document',
-        type: 'item',
-        classes: 'nav-item',
-        url: 'https://codedthemes.gitbook.io/berry-angular/',
-        icon: 'ti ti-vocabulary',
-        target: true,
-        external: true
       }
     ]
   }
