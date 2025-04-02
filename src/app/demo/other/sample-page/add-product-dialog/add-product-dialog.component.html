@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <h4 class="modal-title">Agregar Producto</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="productForm">
+
+    <div class="mb-3">
+      <label for="descripcion" class="form-label">Descripción</label>
+      <input id="descripcion" class="form-control" formControlName="descripcion">
+    </div>
+    <div class="mb-3">
+      <label for="precio" class="form-label">Precio</label>
+      <input id="precio" type="number" class="form-control" formControlName="precio">
+    </div>
+    <div class="mb-3">
+      <label for="cantidad" class="form-label">Cantidad</label>
+      <input id="cantidad" type="number" class="form-control" formControlName="cantidad">
+    </div>
+    <div class="form-group">
+      <label for="categoria">Categoría</label>
+      <select id="categoria" class="form-control" formControlName="cveCategoria">
+        <option *ngFor="let categoria of categorias" [value]="categoria.cveCategoria">
+          {{ categoria.descripcion }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="imagen" class="form-label">Imagen</label>
+      <input id="imagen" type="file" class="form-control" (change)="onFileSelected($event)">
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancelar</button>
+  <button type="button" class="btn btn-primary" [disabled]="productForm.invalid" (click)="save()">Guardar</button>
+</div>
