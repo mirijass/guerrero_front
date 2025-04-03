@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { ToastService } from 'src/app/theme/shared/service/toast.service';
 
 @Component({
   selector: 'app-sample-page',
@@ -32,6 +33,9 @@ export default class SamplePageComponent{
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+    toastService = inject(ToastService);
+  
 
   // Inyección del servicio en el constructor
   constructor(private productosService: ProductosService,
@@ -85,6 +89,8 @@ export default class SamplePageComponent{
         });
       },
       error: (error) => {
+        this.toastService.showDanger(error);
+
         console.error('Error al obtener productos:', error);
       },
     });
@@ -96,7 +102,7 @@ export default class SamplePageComponent{
     this.productosService.insertarProducto(producto).subscribe({
       next: (response) => {
         console.log('Producto insertado:', response);
-
+        this.toastService.showSuccess('Los datos se guardaron correctamente');
         // Subir la imagen si existe
         if (producto.imagen) {
           this.agregarImagen(response.cveProducto, producto.imagen);
@@ -106,6 +112,7 @@ export default class SamplePageComponent{
         this.getProductos(); // Actualizar la lista de productos después de insertar
       },
       error: (error) => {
+        this.toastService.showDanger(error);
         console.error('Error al insertar producto:', error);
       },
     });
@@ -116,6 +123,7 @@ export default class SamplePageComponent{
     this.productosService.actualizarProducto(cveProducto, producto).subscribe({
       next: (response) => {
         console.log('Producto actualizado:', response);
+        this.toastService.showSuccess('Los datos se actualizaron correctamente');
         // Subir la imagen si existe
         if (producto.imagen) {
           this.agregarImagen(cveProducto, producto.imagen);
@@ -129,6 +137,7 @@ export default class SamplePageComponent{
         this.getProductos();
       },
       error: (error) => {
+        this.toastService.showDanger(error);
         console.error('Error al actualizar producto:', error);
       },
     });
@@ -140,9 +149,11 @@ export default class SamplePageComponent{
         this.productosService.eliminarProducto(cveProducto).subscribe({
           next: () => {
             console.log(`Producto con ID ${cveProducto} eliminado.`);
+            this.toastService.showSuccess('Producto eliminado correctamente');
             this.dataSource.data = this.dataSource.data.filter((producto) => producto.cveProducto !== cveProducto); // Actualizar la tabla
           },
           error: (error) => {
+            this.toastService.showDanger(error);
             console.error('Error al eliminar producto:', error);
           },
         });
@@ -161,6 +172,7 @@ export default class SamplePageComponent{
         console.log('Imagen subida exitosamente:', response);
       },
       error: (error) => {
+        this.toastService.showDanger(error);
         console.error('Error al subir la imagen:', error);
       },
     });

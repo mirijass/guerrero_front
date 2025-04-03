@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DynamicFormComponent } from 'src/app/shared/dynamic-form/dynamic-form.component';
 import { CategoriaService } from 'src/app/theme/shared/service/categoria.service';

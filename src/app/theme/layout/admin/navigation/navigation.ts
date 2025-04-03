@@ -91,7 +91,7 @@ export const NavigationItems: NavigationItem[] = [
   },
   {
     id: 'other',
-    title: 'Other',
+    title: 'Productos',
     type: 'group',
     icon: 'icon-navigation',
     children: [
@@ -100,6 +100,22 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Sample Page',
         type: 'item',
         url: '/admin/sample-page',
+        classes: 'nav-item',
+        icon: 'ti ti-brand-chrome'
+      }
+    ]
+  },
+  {
+    id: 'categoria',
+    title: 'Categorías',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'categoria',
+        title: 'Categoría',
+        type: 'item',
+        url: '/admin/categoria',
         classes: 'nav-item',
         icon: 'ti ti-brand-chrome'
       }

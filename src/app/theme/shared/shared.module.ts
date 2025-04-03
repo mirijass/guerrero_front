@@ -9,6 +9,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 
 
 
@@ -40,7 +42,8 @@ import { FormErrorComponent } from 'src/app/shared/form-error/form-error.compone
     MatInputModule,
     FormErrorComponent,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSnackBarModule
   ],
   exports: [
     CommonModule,
@@ -59,7 +62,8 @@ import { FormErrorComponent } from 'src/app/shared/form-error/form-error.compone
     MatInputModule,
     FormErrorComponent,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSnackBarModule
   ],
   declarations: []
 })

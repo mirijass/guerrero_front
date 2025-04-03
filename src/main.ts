@@ -7,6 +7,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { authInterceptor } from './app/theme/shared/service/auth.interceptor';
+import '@angular/localize/init';
 
 if (environment.production) {
   enableProdMode();

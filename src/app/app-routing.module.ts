@@ -28,6 +28,10 @@ const routes: Routes = [
       {
         path: 'sample-page',
         loadComponent: () => import('./demo/other/sample-page/sample-page.component')
+      },
+      {
+        path: 'categoria',
+        loadComponent: () => import('./demo/admin/categoria/categoria.component').then((m) => m.CategoriaComponent)
       }
     ]
   },
