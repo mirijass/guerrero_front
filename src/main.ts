@@ -8,6 +8,7 @@ import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { authInterceptor } from './app/theme/shared/service/auth.interceptor';
 import '@angular/localize/init';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 if (environment.production) {
   enableProdMode();
@@ -15,7 +16,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [importProvidersFrom(BrowserModule, AppRoutingModule), provideAnimations(),
-    provideHttpClient(withInterceptors([authInterceptor])) // Configuración global del cliente HTTP
+    provideHttpClient(withInterceptors([authInterceptor])), provideAnimationsAsync() // Configuración global del cliente HTTP
 
    ]
 }).catch((err) => console.error(err));
