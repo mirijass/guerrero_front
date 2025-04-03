@@ -18,6 +18,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 // bootstrap import
 import { NgbDropdownModule, NgbNavModule, NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatTableModule } from '@angular/material/table';
+import { FormErrorComponent } from 'src/app/shared/form-error/form-error.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { MatTableModule } from '@angular/material/table';
     MatIconModule,
     MatTableModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    FormErrorComponent
   ],
   exports: [
     CommonModule,
@@ -50,7 +52,8 @@ import { MatTableModule } from '@angular/material/table';
     MatIconModule,
     MatTableModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    FormErrorComponent
   ],
   declarations: []
 })

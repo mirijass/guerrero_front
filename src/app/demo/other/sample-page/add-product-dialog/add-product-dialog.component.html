@@ -1,33 +1,53 @@
 <div class="modal-header">
-  <h4 class="modal-title">Agregar Producto</h4>
+  <h4 class="modal-title">{{titulo}}</h4>
   <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
 </div>
 <div class="modal-body">
-  <form [formGroup]="productForm">
+  <form [formGroup]="productForm" class="header-search">
+    
+    <div class="form-floating mb-3">
+      <input id="nombre" class="form-control" formControlName="nombre" placeholder="nombre">
+      <app-form-error [control]="productForm.get('nombre')"></app-form-error>
 
-    <div class="mb-3">
-      <label for="descripcion" class="form-label">Descripción</label>
-      <input id="descripcion" class="form-control" formControlName="descripcion">
+      <label for="nombre">Nombre</label>
     </div>
-    <div class="mb-3">
-      <label for="precio" class="form-label">Precio</label>
-      <input id="precio" type="number" class="form-control" formControlName="precio">
+
+    <div class="form-floating mb-3">
+      <input id="descripcion" class="form-control" formControlName="descripcion" placeholder="descripcion">
+      <app-form-error [control]="productForm.get('descripcion')"></app-form-error>
+      <label for="descripcion">Descripción</label>
     </div>
-    <div class="mb-3">
-      <label for="cantidad" class="form-label">Cantidad</label>
-      <input id="cantidad" type="number" class="form-control" formControlName="cantidad">
+    <div class="form-floating mb-3">
+      <input id="precio" type="number" class="form-control" formControlName="precio" placeholder="precio">
+      <app-form-error [control]="productForm.get('precio')"></app-form-error>
+
+      <label for="precio">Precio</label>
     </div>
-    <div class="form-group">
-      <label for="categoria">Categoría</label>
-      <select id="categoria" class="form-control" formControlName="cveCategoria">
+    <div class="form-floating mb-3">
+      <input id="cantidad" type="number" class="form-control" formControlName="cantidad" placeholder="cantidad">
+      <app-form-error [control]="productForm.get('cantidad')"></app-form-error>
+      <label for="cantidad">Cantidad</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <select id="categoria" class="form-control" formControlName="cveCategoria" placeholder="categoria">
+        <option value="" disabled selected>Selecciona una categoría</option>
+        <label for="categoria">Categoría</label>
         <option *ngFor="let categoria of categorias" [value]="categoria.cveCategoria">
           {{ categoria.descripcion }}
         </option>
       </select>
     </div>
-    <div class="mb-3">
-      <label for="imagen" class="form-label">Imagen</label>
-      <input id="imagen" type="file" class="form-control" (change)="onFileSelected($event)">
+    <div class="form-floating mb-3">
+      <input 
+        id="imagen" 
+        type="file" 
+        class="form-control" 
+        accept="image/*"
+        (change)="onFileSelected($event)" placeholder="imagen">
+        <label for="imagen">Imagen</label>
+
+      <small class="text-danger" *ngIf="fileError">{{ fileError }}</small> <!-- Mostrar error si el archivo no es válido -->
     </div>
   </form>
 </div>

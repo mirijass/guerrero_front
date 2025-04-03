@@ -19,7 +19,9 @@ export class AddProductDialogComponent {
   categorias: any[] = []; // Lista de categorías activas
   producto: any; // Producto recibido para editar
   selectedFile: File | null = null; // Variable para almacenar el archivo seleccionado
+  fileError: string | null = null; // Variable para almacenar errores de archivo
 
+  titulo: string = ''; // Título del modal
 
   constructor(
     private fb: FormBuilder,
@@ -33,16 +35,21 @@ export class AddProductDialogComponent {
     // Inicializar el formulario
     this.productForm = this.fb.group({
       cveProducto: [this.producto?.cveProducto || ''],
+      nombre: [this.producto?.nombre || '', Validators.required],
       descripcion: [this.producto?.descripcion || '', Validators.required],
-      precio: [this.producto?.precio || 0, [Validators.required, Validators.min(0)]],
-      cantidad: [this.producto?.cantidad || 0, [Validators.required, Validators.min(0)]],
+      precio: [this.producto?.precio || 0, [Validators.required, Validators.min(1)]],
+      cantidad: [this.producto?.cantidad || 0, [Validators.required, Validators.min(1)]],
       cveCategoria: [this.producto?.cveCategoria || null, Validators.required],
       imagen: [''], // La imagen se manejará aparte
       activo: [this.producto?.activo ?? true]
     });
 
-
-
+    console.log('Producto recibido:', this.producto);
+    if(this.producto?.cveProducto !=null) {
+      this.titulo = 'Editar Producto'; // Cambiar el título si se está editando un producto
+    }else{
+      this.titulo = 'Agregar Producto'; // Cambiar el título si se está agregando un nuevo producto
+    }
         // Cargar las categorías activas
         this.listarCategorias();
 
@@ -63,12 +70,31 @@ export class AddProductDialogComponent {
   
 
       // Manejar el archivo seleccionado
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-    }
-  }
+      onFileSelected(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+          const file = input.files[0];
+      
+          // Validar tipo de archivo
+          if (!file.type.startsWith('image/')) {
+            this.fileError = 'El archivo seleccionado no es una imagen.';
+            this.selectedFile = null;
+            return;
+          }
+      
+          // Validar tamaño del archivo (máximo 2 MB)
+          const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB
+          if (file.size > maxSizeInBytes) {
+            this.fileError = 'El archivo debe pesar menos de 2 MB.';
+            this.selectedFile = null;
+            return;
+          }
+      
+          // Si pasa las validaciones, asignar el archivo
+          this.fileError = null;
+          this.selectedFile = file;
+        }
+      }
 
   save(): void {
     if (this.productForm.valid) {

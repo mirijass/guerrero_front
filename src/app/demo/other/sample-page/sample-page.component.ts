@@ -21,7 +21,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export default class SamplePageComponent{
   // Columnas que se mostrarán en la tabla
-  displayedColumns: string[] = ['cveProducto', 'descripcion', 'precio', 'cantidad', 'categoria', 'imagen', 'acciones'];
+  displayedColumns: string[] = ['cveProducto', 'nombre', 'descripcion', 'precio', 'cantidad', 'categoria', 'imagen', 'acciones'];
 
   // Datos de ejemplo para la tabla
   dataSource: any[] = [];
@@ -41,20 +41,39 @@ export default class SamplePageComponent{
   // Consumir service
   getProductos() {
     console.log('Obteniendo productos...');
-
+  
     this.productosService.listarProductos().subscribe({
       next: (response) => {
         console.log('Productos:', response);
-              // Convertir el Buffer de imagen a Base64
-      this.dataSource = response.map((producto: any) => {
-        if (producto.imagen && producto.imagen.data) {
-          const base64String = btoa(
-            String.fromCharCode(...new Uint8Array(producto.imagen.data))
-          );
-          producto.imagen = `data:image/png;base64,${base64String}`; // Ajusta el tipo de imagen si no es PNG
-        }
-        return producto;
-      });
+  
+        // Convertir las imágenes al formato Base64 si es necesario
+        this.dataSource = response.map((producto: any) => {
+          if (producto.imagen) {
+            if (typeof producto.imagen === 'string' && producto.imagen.startsWith('data:image')) {
+              // Si la imagen ya está en formato Base64, no hacer nada
+              console.log('La imagen ya está en formato Base64:', producto.imagen);
+            } else if (producto.imagen.data && Array.isArray(producto.imagen.data)) {
+              // Si la imagen está en formato Buffer, convertirla a Base64
+              try {
+                console.log('Convirtiendo imagen desde Buffer a Base64...');
+                const base64String = btoa(
+                  String.fromCharCode(...new Uint8Array(producto.imagen.data))
+                );
+                producto.imagen = `data:image/png;base64,${base64String}`; // Ajusta el tipo de imagen si no es PNG
+              } catch (error) {
+                console.error('Error al convertir la imagen a Base64:', error);
+                producto.imagen = null; // Si ocurre un error, asignar null
+              }
+            } else {
+              // Si no hay datos válidos, asignar null
+              console.warn('Formato de imagen no válido:', producto.imagen);
+              producto.imagen = null;
+            }
+          } else {
+            producto.imagen = null; // Si no hay imagen, asignar null
+          }
+          return producto;
+        });
       },
       error: (error) => {
         console.error('Error al obtener productos:', error);
@@ -62,6 +81,7 @@ export default class SamplePageComponent{
     });
   }
 
+  
   // Insertar producto
   insertarProducto(producto: any): void {
     this.productosService.insertarProducto(producto).subscribe({
@@ -74,6 +94,7 @@ export default class SamplePageComponent{
         }
   
         this.dataSource = [...this.dataSource, response]; 
+        this.getProductos(); // Actualizar la lista de productos después de insertar
       },
       error: (error) => {
         console.error('Error al insertar producto:', error);
@@ -96,6 +117,7 @@ export default class SamplePageComponent{
           this.dataSource[index] = response; // Actualizar el producto en la tabla
           this.dataSource = [...this.dataSource]; // Forzar la actualización de la tabla
         }
+        this.getProductos();
       },
       error: (error) => {
         console.error('Error al actualizar producto:', error);
