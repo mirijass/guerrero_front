@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DynamicFormComponent } from 'src/app/shared/dynamic-form/dynamic-form.component';
 import { CategoriaService } from 'src/app/theme/shared/service/categoria.service';
 import { ProductosService } from 'src/app/theme/shared/service/productos.service';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -9,7 +10,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-add-product-dialog',
-  imports: [SharedModule],
+  imports: [SharedModule, DynamicFormComponent],
   templateUrl: './add-product-dialog.component.html',
   styleUrl: './add-product-dialog.component.scss'
 })
@@ -22,6 +23,10 @@ export class AddProductDialogComponent {
   fileError: string | null = null; // Variable para almacenar errores de archivo
 
   titulo: string = ''; // Título del modal
+
+  fields: any[] = []; // Configuración de los campos
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -44,14 +49,39 @@ export class AddProductDialogComponent {
       activo: [this.producto?.activo ?? true]
     });
 
+      // Cargar las categorías activas
+      this.listarCategorias();
+
+        // Configuración de los campos
+    this.fields = [
+      { name: 'nombre', type: 'input', label: 'Nombre', placeholder: 'Ingrese el nombre', inputType: 'text' },
+      { name: 'descripcion', type: 'input', label: 'Descripción', placeholder: 'Ingrese la descripción', inputType: 'text' },
+      { name: 'precio', type: 'input', label: 'Precio', placeholder: 'Ingrese el precio', inputType: 'number' },
+      { name: 'cantidad', type: 'input', label: 'Cantidad', placeholder: 'Ingrese la cantidad', inputType: 'number' },
+      {
+        name: 'cveCategoria',
+        type: 'select',
+        label: 'Categoría',
+        placeholder: 'Seleccione una categoría',
+        options: this.categorias
+      }, 
+      {
+        name: 'imagen',
+        type: 'file',
+        label: 'Imagen',
+        placeholder: 'Seleccione una imagen',
+        accept: 'image/*',
+        onChange: (event: Event) => this.onFileSelected(event) // Manejar el archivo seleccionado
+      }
+    ];
+
     console.log('Producto recibido:', this.producto);
     if(this.producto?.cveProducto !=null) {
       this.titulo = 'Editar Producto'; // Cambiar el título si se está editando un producto
     }else{
       this.titulo = 'Agregar Producto'; // Cambiar el título si se está agregando un nuevo producto
     }
-        // Cargar las categorías activas
-        this.listarCategorias();
+
 
   }
 
@@ -60,7 +90,16 @@ export class AddProductDialogComponent {
       this.categoriaService.listarCategoriasActivas().subscribe({
         next: (response) => {
           console.log('Categorías activas:', response);
-          this.categorias = response; // Asignar las categorías al array
+          this.categorias = response.map((categoria: any) => ({
+            value: categoria.cveCategoria,
+            label: categoria.descripcion
+          }));
+
+                  // Actualizar las opciones del campo de categorías
+        const categoriaField = this.fields.find((field) => field.name === 'cveCategoria');
+        if (categoriaField) {
+          categoriaField.options = this.categorias;
+        }
         },
         error: (error) => {
           console.error('Error al obtener categorías:', error);
@@ -102,7 +141,8 @@ export class AddProductDialogComponent {
   
       // Convertir cveCategoria a número
       formValue.cveCategoria = +formValue.cveCategoria;
-  
+      formValue.precio = +formValue.precio;
+      formValue.cantidad = +formValue.cantidad; 
       // Subir la imagen si se seleccionó un archivo
       formValue.imagen = this.selectedFile;
       console.log('Formulario válido:', formValue);

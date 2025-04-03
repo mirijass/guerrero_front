@@ -1,17 +1,24 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Productos">
-
       <div class="row mb-3">
-        <div class="col-sm-12 text-right">
-          <button class="btn btn-outline-primary" (click)="openProductModal()">Launch demo modal</button>
-          <!-- <button mat-raised-button color="primary" (click)="openAddProductModal()">Agregar Producto</button> -->
+        <!-- Columna para el botón alineado a la derecha -->
+        <div class="col-sm-6 text-start">
+          <mat-form-field class="w-100">
+            <mat-label>Filtrar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Valor" #input>
+          </mat-form-field>
+        </div>
+      
+        <!-- Columna para el botón alineado a la derecha -->
+        <div class="col-sm-6 text-end">
+          <button class="btn btn-outline-primary" (click)="openProductModal()">Agregar producto</button>
         </div>
       </div>
-
       <div class="row">
         <div class="col-sm-12">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
               <!-- Columna: ID -->
               <ng-container matColumnDef="cveProducto">
                 <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -76,6 +83,8 @@
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+            <mat-paginator [pageSizeOptions]="[6, 10, 25, 100]" aria-label="Elemnetos por pagina"></mat-paginator>
+
         </div>
       </div>
     </app-card>

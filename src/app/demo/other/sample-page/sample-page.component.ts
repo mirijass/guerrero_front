@@ -1,6 +1,6 @@
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 // angular import
-import { Component, inject, signal, TemplateRef, WritableSignal } from '@angular/core';
+import { Component, inject, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 
@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import { AddProductDialogComponent } from './add-product-dialog/add-product-dialog.component';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-sample-page',
@@ -24,10 +26,12 @@ export default class SamplePageComponent{
   displayedColumns: string[] = ['cveProducto', 'nombre', 'descripcion', 'precio', 'cantidad', 'categoria', 'imagen', 'acciones'];
 
   // Datos de ejemplo para la tabla
-  dataSource: any[] = [];
+  dataSource= new MatTableDataSource([]); // Inicializar dataSource como un nuevo MatTableDataSource vacío
 
   imagenSeleccionada: string | null = null; // Variable para almacenar la imagen seleccionada
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   // Inyección del servicio en el constructor
   constructor(private productosService: ProductosService,
@@ -36,6 +40,11 @@ export default class SamplePageComponent{
 
   ngOnInit(): void {
     this.getProductos();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   // Consumir service
@@ -47,7 +56,7 @@ export default class SamplePageComponent{
         console.log('Productos:', response);
   
         // Convertir las imágenes al formato Base64 si es necesario
-        this.dataSource = response.map((producto: any) => {
+        this.dataSource.data = response.map((producto: any) => {
           if (producto.imagen) {
             if (typeof producto.imagen === 'string' && producto.imagen.startsWith('data:image')) {
               // Si la imagen ya está en formato Base64, no hacer nada
@@ -93,7 +102,7 @@ export default class SamplePageComponent{
           this.agregarImagen(response.cveProducto, producto.imagen);
         }
   
-        this.dataSource = [...this.dataSource, response]; 
+        // this.dataSource = [...this.dataSource, response]; 
         this.getProductos(); // Actualizar la lista de productos después de insertar
       },
       error: (error) => {
@@ -112,10 +121,10 @@ export default class SamplePageComponent{
           this.agregarImagen(cveProducto, producto.imagen);
         }
         response.imagen = producto.imagen; // Mantener la imagen del producto actualizado
-        const index = this.dataSource.findIndex((p) => p.cveProducto === cveProducto);
+        const index = this.dataSource.data.findIndex((p) => p.cveProducto === cveProducto);
         if (index !== -1) {
           this.dataSource[index] = response; // Actualizar el producto en la tabla
-          this.dataSource = [...this.dataSource]; // Forzar la actualización de la tabla
+          this.dataSource.data = [...this.dataSource.data]; // Forzar la actualización de la tabla
         }
         this.getProductos();
       },
@@ -131,7 +140,7 @@ export default class SamplePageComponent{
         this.productosService.eliminarProducto(cveProducto).subscribe({
           next: () => {
             console.log(`Producto con ID ${cveProducto} eliminado.`);
-            this.dataSource = this.dataSource.filter((producto) => producto.cveProducto !== cveProducto); // Actualizar la tabla
+            this.dataSource.data = this.dataSource.data.filter((producto) => producto.cveProducto !== cveProducto); // Actualizar la tabla
           },
           error: (error) => {
             console.error('Error al eliminar producto:', error);
@@ -179,5 +188,15 @@ export default class SamplePageComponent{
       }
     );
   }
+
+    applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+
 
 }
