@@ -8,8 +8,6 @@ import { MatSort } from '@angular/material/sort';
 import { CategoriaService } from 'src/app/theme/shared/service/categoria.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddCategoriaDialogComponent } from './add-categoria-dialog/add-categoria-dialog.component';
-import { Subject, takeUntil } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastService } from 'src/app/theme/shared/service/toast.service';
 
 @Component({
@@ -23,8 +21,6 @@ export class CategoriaComponent {
   dataSource = new MatTableDataSource([]);
   displayedColumns: String[] = ['nombre', 'estatus', 'acciones'];
 
-  alertMessage: string | null = null; // Mensaje de la alerta
-  alertClass: string = ''; // Clase CSS para el estilo de la alerta
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

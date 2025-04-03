@@ -1,11 +1,84 @@
-import { Component } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Component, inject, ViewChild } from '@angular/core';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { VentaService } from 'src/app/theme/shared/service/venta.service';
+import { ToastService } from 'src/app/theme/shared/service/toast.service';
 
 @Component({
   selector: 'app-ventas',
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './ventas.component.html',
   styleUrl: './ventas.component.scss'
 })
 export class VentasComponent {
+
+  displayedColumns: string[] = ['cveVenta', 'totalVenta', 'fechaVenta', 'cveUsuario', 'estado', 'expand'];
+  
+  dataSource = new MatTableDataSource([]);
+  expandedElement: any | null = null;
+
+  estados: string[] = ['Pendiente', 'Procesando', 'Enviado', 'Entregado', 'Cancelado'];
+
+
+    toastService = inject(ToastService);
+  
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  constructor(private ventaService: VentaService) {}
+
+  ngOnInit(): void {
+    this.getVentas();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  getVentas(): void {
+    this.ventaService.listarVentas().subscribe({
+      next: (ventas) => {
+        this.dataSource.data = ventas;
+      },
+      error: (error) => {
+        console.error('Error al obtener las ventas:', error);
+      }
+    });
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  toggleRow(row: any): void {
+    console.log('Row clicked:', row);
+    console.log('Expanded element:', this.expandedElement);
+    this.expandedElement = this.expandedElement === row ? null : row;
+  }
+
+  cambiarEstado(venta: any): void {
+    const nuevoEstado = venta.estado;
+  
+    // Llamar al servicio para actualizar el estado en el backend
+    this.ventaService.cambiarEstadoVenta(venta.cveVenta, nuevoEstado).subscribe({
+      next: () => {
+        console.log(`Estado de la venta ${venta.cveVenta} actualizado a ${nuevoEstado}`);
+        this.toastService.showSuccess('Estado actualizado correctamente');
+      },
+      error: (error) => {
+        console.error('Error al actualizar el estado:', error);
+        this.toastService.showDanger('Error al actualizar el estado');
+      }
+    });
+  }
 
 }

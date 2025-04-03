@@ -11,6 +11,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
+import {MatSelectModule} from '@angular/material/select';
 
 
 
@@ -43,7 +44,8 @@ import { FormErrorComponent } from 'src/app/shared/form-error/form-error.compone
     FormErrorComponent,
     MatSortModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule
   ],
   exports: [
     CommonModule,
@@ -63,7 +65,8 @@ import { FormErrorComponent } from 'src/app/shared/form-error/form-error.compone
     FormErrorComponent,
     MatSortModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule
   ],
   declarations: []
 })
