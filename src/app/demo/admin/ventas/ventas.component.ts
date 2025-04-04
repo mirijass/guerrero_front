@@ -5,12 +5,22 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { VentaService } from 'src/app/theme/shared/service/venta.service';
 import { ToastService } from 'src/app/theme/shared/service/toast.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-ventas',
   imports: [SharedModule],
   templateUrl: './ventas.component.html',
-  styleUrl: './ventas.component.scss'
+  styleUrl: './ventas.component.scss',
+  animations: [
+    trigger('expandCollapse', [
+      state('collapsed', style({ height: '0px', overflow: 'hidden', opacity: 0 })),
+      state('expanded', style({ height: '*', opacity: 1 })),
+      transition('collapsed <=> expanded', [
+        animate('300ms ease-in-out')
+      ])
+    ])
+  ]
 })
 export class VentasComponent {
 
@@ -59,11 +69,22 @@ export class VentasComponent {
     }
   }
 
-  toggleRow(row: any): void {
-    console.log('Row clicked:', row);
-    console.log('Expanded element:', this.expandedElement);
-    this.expandedElement = this.expandedElement === row ? null : row;
-  }
+    /** Checks whether an element is expanded. */
+    isExpanded(row: any) {
+      console.log('Row:', row);
+      return this.expandedElement === row;
+    }
+  
+    /** Toggles the expanded state of an element. */
+    toggle(row: any) {
+      this.expandedElement = this.isExpanded(row) ? null : row;
+    }
+
+  // toggleRow(row: any): void {
+  //   console.log('Row clicked:', row);
+  //   console.log('Expanded element:', this.expandedElement);
+  //   this.expandedElement = this.expandedElement === row ? null : row;
+  // }
 
   cambiarEstado(venta: any): void {
     const nuevoEstado = venta.estado;
@@ -79,6 +100,12 @@ export class VentasComponent {
         this.toastService.showDanger('Error al actualizar el estado');
       }
     });
+  }
+
+  calcularSubtotal(detalles: any[]): number {
+    return detalles.reduce((subtotal, detalle) => {
+      return subtotal + (detalle.cantidad * detalle.precioProducto);
+    }, 0);
   }
 
 }

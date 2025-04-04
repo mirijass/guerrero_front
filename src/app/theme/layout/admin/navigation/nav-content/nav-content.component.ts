@@ -15,6 +15,8 @@ import { NavItemComponent } from './nav-item/nav-item.component';
 
 // NgScrollbarModule
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { JwtService } from 'src/app/theme/shared/service/jwt.service';
+import { NavigationUserItems } from '../../../usuario/navigation.user';
 
 @Component({
   selector: 'app-nav-content',
@@ -38,8 +40,14 @@ export class NavContentComponent implements OnInit {
   windowWidth: number;
 
   // Constructor
-  constructor() {
-    this.navigations = NavigationItems;
+  constructor(private jwtService: JwtService) {
+    let usuario=jwtService.obtenerDatosToken();
+    console.log(usuario);
+    if(usuario.cveRol==1){
+      this.navigations = NavigationItems;
+    }else{
+      this.navigations= NavigationUserItems
+    }
     this.windowWidth = window.innerWidth;
   }
 

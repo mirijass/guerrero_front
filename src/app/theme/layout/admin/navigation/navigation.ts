@@ -101,7 +101,7 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         url: '/admin/sample-page',
         classes: 'nav-item',
-        icon: 'ti ti-brand-chrome'
+        icon: 'ti ti-building-store'
       }
     ]
   },
@@ -113,11 +113,11 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'categoria',
-        title: 'Categoría',
+        title: 'Categorías',
         type: 'item',
         url: '/admin/categoria',
         classes: 'nav-item',
-        icon: 'ti ti-brand-chrome'
+        icon: 'ti ti-category'
       }
     ]
   },
@@ -133,7 +133,23 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         url: '/admin/venta',
         classes: 'nav-item',
-        icon: 'ti ti-brand-chrome'
+        icon: 'ti ti-shopping-bag'
+      }
+    ]
+  },
+  {
+    id: 'carrito',
+    title: 'Carrito',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'carrito',
+        title: 'Carrito',
+        type: 'item',
+        url: '/user/carrito',
+        classes: 'nav-item',
+        icon: 'ti ti-shopping-bag'
       }
     ]
   }

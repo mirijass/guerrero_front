@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
-import { GuestComponent } from './theme/layout/guest/guest.component';
+import { UsuarioComponent } from './theme/layout/usuario/usuario.component';
 
 const routes: Routes = [
   {
@@ -40,8 +40,22 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'user',
+    component: UsuarioComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: '', 
+        pathMatch: 'full'
+      },
+      {
+        path: 'carrito',
+        loadComponent: () => import('./user/carrito/carrito.component').then((m) => m.CarritoComponent)
+      }
+    ]
+  },
+  {
     path: '',
-    component: GuestComponent,
     children: [
       {
         path: '',
