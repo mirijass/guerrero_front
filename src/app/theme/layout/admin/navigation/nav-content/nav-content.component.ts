@@ -43,7 +43,7 @@ export class NavContentComponent implements OnInit {
   constructor(private jwtService: JwtService) {
     let usuario=jwtService.obtenerDatosToken();
     console.log(usuario);
-    if(usuario.cveRol==1){
+    if(usuario.rol.clave==1){
       this.navigations = NavigationItems;
     }else{
       this.navigations= NavigationUserItems

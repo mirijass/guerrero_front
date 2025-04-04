@@ -99,7 +99,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'Productos',
         title: 'Productos',
         type: 'item',
-        url: '/admin/sample-page',
+        url: '/admin/productos',
         classes: 'nav-item',
         icon: 'ti ti-building-store'
       }

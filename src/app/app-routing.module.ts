@@ -26,8 +26,8 @@ const routes: Routes = [
         loadComponent: () => import('./demo/elements/element-color/element-color.component')
       },
       {
-        path: 'sample-page',
-        loadComponent: () => import('./demo/other/sample-page/sample-page.component')
+        path: 'productos',
+        loadComponent: () => import('./demo/admin/productos/productos.component').then((m) => m.default)
       },
       {
         path: 'categoria',

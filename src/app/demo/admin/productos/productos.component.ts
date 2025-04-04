@@ -1,7 +1,6 @@
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 // angular import
-import { Component, inject, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, inject, ViewChild } from '@angular/core';
 
 
 // project import
@@ -11,18 +10,18 @@ import { ProductosService } from 'src/app/theme/shared/service/productos.service
 import { CommonModule } from '@angular/common';
 import { AddProductDialogComponent } from './add-product-dialog/add-product-dialog.component';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ToastService } from 'src/app/theme/shared/service/toast.service';
 
 @Component({
-  selector: 'app-sample-page',
+  selector: 'app-productos',
   imports: [CardComponent, CommonModule, SharedModule],
-  templateUrl: './sample-page.component.html',
-  styleUrls: ['./sample-page.component.scss']
+  templateUrl: './productos.component.html',
+  styleUrls: ['./productos.component.scss']
 })
-export default class SamplePageComponent{
+export default class ProductosComponent{
   // Columnas que se mostrarán en la tabla
   displayedColumns: string[] = ['cveProducto', 'nombre', 'descripcion', 'precio', 'cantidad', 'categoria', 'imagen', 'acciones'];
 
