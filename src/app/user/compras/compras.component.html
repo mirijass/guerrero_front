@@ -1,0 +1,114 @@
+<div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="Mis Compras">
+        <div class="row mb-3">
+          <!-- Filtro de búsqueda -->
+          <div class="col-sm-6 text-start">
+            <mat-form-field class="w-100">
+              <mat-label></mat-label>
+              <input matInput (keyup)="applyFilter($event)" placeholder="Buscar compra" #input>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-responsive">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort multiTemplateDataRows>
+                <!-- Columna: ID de la Venta -->
+                <ng-container matColumnDef="cveVenta">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Compra</th>
+                    <td mat-cell *matCellDef="let venta">{{ venta.cveVenta }}</td>
+                </ng-container>
+    
+                <!-- Columna: Total de la Venta -->
+                <ng-container matColumnDef="totalVenta">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+                    <td mat-cell *matCellDef="let venta">{{ venta.totalVenta | currency }}</td>
+                </ng-container>
+    
+                <!-- Columna: Fecha de la Venta -->
+                <ng-container matColumnDef="fechaVenta">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                    <td mat-cell *matCellDef="let venta">{{ venta.fechaVenta | date: 'short' }}</td>
+                </ng-container>
+    
+                <!-- Columna: Estado -->
+                <ng-container matColumnDef="estado">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+                    <td mat-cell *matCellDef="let venta">{{ venta.estado }}</td>
+                </ng-container>
+    
+                <!-- Columna: Expandir Detalles -->
+                <ng-container matColumnDef="expand">
+                    <th mat-header-cell *matHeaderCellDef>Detalles</th>
+                    <td mat-cell *matCellDef="let venta">
+                    <button mat-icon-button (click)="toggle(venta)">
+                        <mat-icon>{{ expandedElement === venta ? 'expand_less' : 'expand_more' }}</mat-icon>
+                    </button>
+                    </td>
+                </ng-container>
+    
+                <!-- Fila Principal -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+                <tr 
+                mat-row 
+                *matRowDef="let row; columns: ['detail']" 
+                class="example-detail-row" 
+                [class.expanded]="expandedElement === row" 
+                [hidden]="expandedElement !== row">
+                </tr>
+
+                <!-- Fila Expandible -->
+
+                <ng-container matColumnDef="detail">
+                    <td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length" class="detail-container" 
+                    [@expandCollapse]="expandedElement === row ? 'expanded' : 'collapsed'">
+                    <div>
+                        <br>
+                        <h5>Detalles de la Venta</h5>
+                        <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                            <th>Producto</th>
+                            <th>Descripción</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let detalle of row.DetalleVenta">
+                            <td>{{ detalle.producto.nombre }}</td>
+                            <td>{{ detalle.producto.descripcion }}</td>
+                            <td>{{ detalle.cantidad }}</td>
+                            <td>{{ detalle.precioProducto | currency }}</td>
+                            </tr>
+
+                            <tr>
+                            <td colspan="3" class="text-end"><strong>Subtotal:</strong></td>
+                            <td>{{ calcularSubtotal(row.DetalleVenta) | currency }}</td>
+                            </tr>
+                            <tr>
+                            <td colspan="3" class="text-end"><strong>Metodo de pago:</strong></td>
+                            <td>{{ row.metodoPago }}</td>
+                            </tr>
+                            <tr>
+                            <td colspan="3" class="text-end"><strong>Dirección:</strong></td>
+                            <td>{{ row.usuario.direccion }}</td>
+                            </tr>
+
+                        </tbody>
+                        </table>
+                    </div>
+                    </td>
+                </ng-container>
+                
+                </table>
+            </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+        </div>
+      </app-card>
+    </div>
+  </div>

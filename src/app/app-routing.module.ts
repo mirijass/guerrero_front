@@ -51,6 +51,10 @@ const routes: Routes = [
       {
         path: 'carrito',
         loadComponent: () => import('./user/carrito/carrito.component').then((m) => m.CarritoComponent)
+      },
+      {
+        path: 'compras',
+        loadComponent: () => import('./user/compras/compras.component').then((m) => m.ComprasComponent)
       }
     ]
   },

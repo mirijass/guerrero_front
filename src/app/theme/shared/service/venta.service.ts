@@ -15,6 +15,10 @@ export class VentaService {
     return this.http.get(`${this.baseUrl}/`);
   }
 
+  listarVentasPorUsuario(cveUsuario: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/usuario/${cveUsuario}`); 
+  }
+
   // Insertar una nueva venta
   insertarVenta(venta: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/`, venta);

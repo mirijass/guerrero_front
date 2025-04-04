@@ -62,4 +62,10 @@ export class JwtService {
     const token = this.obtenerToken();
     return token ? this.decodificarToken(token) : null;
   }
+
+  obtenerCveUsuario(): number | null {
+    const datosToken = this.obtenerDatosToken();
+    return datosToken ? datosToken.cveUsuario : null;
+  }
+
 }
