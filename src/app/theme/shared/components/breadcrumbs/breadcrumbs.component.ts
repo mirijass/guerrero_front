@@ -6,6 +6,8 @@ import { Title } from '@angular/platform-browser';
 
 // project import
 import { NavigationItem, NavigationItems } from 'src/app/theme/layout/admin/navigation/navigation';
+import { JwtService } from '../../service/jwt.service';
+import { NavigationUserItems } from 'src/app/theme/layout/usuario/navigation.user';
 
 interface titleType {
   // eslint-disable-next-line
@@ -34,8 +36,14 @@ export class BreadcrumbComponent {
   navigationList!: titleType[];
 
   // constructor
-  constructor() {
-    this.navigations = NavigationItems;
+  constructor(private jwtService: JwtService) {
+    let usuario=jwtService.obtenerDatosToken();
+    if(usuario.rol.clave==1){
+      this.navigations = NavigationItems;
+    }else{
+      this.navigations= NavigationUserItems
+    }
+
     this.type = 'icon';
     this.setBreadcrumb();
   }

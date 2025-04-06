@@ -36,7 +36,7 @@ const routes: Routes = [
       {
         path: 'venta',
         loadComponent: () => import('./demo/admin/ventas/ventas.component').then((m) => m.VentasComponent)
-      }
+      },
     ]
   },
   {
@@ -49,12 +49,20 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'inicio',
+        loadComponent: () => import('./user/inicio/inicio.component').then((m) => m.InicioComponent)
+      },
+      {
         path: 'carrito',
         loadComponent: () => import('./user/carrito/carrito.component').then((m) => m.CarritoComponent)
       },
       {
         path: 'compras',
         loadComponent: () => import('./user/compras/compras.component').then((m) => m.ComprasComponent)
+      },
+      {
+        path: 'productos/:cveCategoria',
+        loadComponent: () => import('./user/productos/productos.component').then((m) => m.ProductosComponent)
       }
     ]
   },

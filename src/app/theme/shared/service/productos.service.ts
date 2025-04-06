@@ -20,6 +20,12 @@ export class ProductosService {
     return this.http.get(`${this.baseUrl}`);
   }
 
+    // Obtener todos los productos
+    listarProductosPorCategoria(cveCategoria: number): Observable<any> {
+      return this.http.get(`${this.baseUrl}/categoria/${cveCategoria}`);
+  
+    }
+
 
    // Insertar un nuevo producto
    insertarProducto(producto: any): Observable<any> {

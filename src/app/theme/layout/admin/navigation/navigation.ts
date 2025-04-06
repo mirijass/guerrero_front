@@ -136,21 +136,5 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'ti ti-shopping-bag'
       }
     ]
-  },
-  {
-    id: 'carrito',
-    title: 'Carrito',
-    type: 'group',
-    icon: 'icon-navigation',
-    children: [
-      {
-        id: 'carrito',
-        title: 'Carrito',
-        type: 'item',
-        url: '/user/carrito',
-        classes: 'nav-item',
-        icon: 'ti ti-shopping-bag'
-      }
-    ]
   }
 ];

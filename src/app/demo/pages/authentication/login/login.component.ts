@@ -20,11 +20,18 @@ export default class LoginComponent {
   };
 
   usuario: any = null;
-    toastService = inject(ToastService);
-    jwtService = inject(JwtService);
+  jwtService = inject(JwtService);
   
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private toastService: ToastService) {
+    this.usuario = this.jwtService.decodificarToken(localStorage.getItem('token') || '');
+    if(this.usuario){
+      if(this.usuario.rol.clave==1){
+        this.router.navigate(['/admin/productos']); // Redirigir al dashboard o página principal
+      }else{
+        this.router.navigate(['/user/inicio']); // Redirigir al dashboard o página principal
+      }
+    }
 
   }
 
@@ -38,9 +45,9 @@ export default class LoginComponent {
         this.toastService.show('Inicio de sesión exitoso');
         let usuario = this.jwtService.decodificarToken(response.token);
         if(usuario.rol.clave==1){
-          this.router.navigate(['/admin']); // Redirigir al dashboard o página principal
+          this.router.navigate(['/admin/productos']); // Redirigir al dashboard o página principal
         }else{
-          this.router.navigate(['/user']); // Redirigir al dashboard o página principal
+          this.router.navigate(['/user/inicio']); // Redirigir al dashboard o página principal
 
         }
       },

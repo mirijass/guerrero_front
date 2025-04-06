@@ -34,7 +34,7 @@
                 <i class="ti ti-user"></i>
                 <span>Social Profile</span>
               </a>
-              <a [routerLink]="['/login']" class="dropdown-item">
+              <a (click)="cerrarSesion()" class="dropdown-item">
                 <i class="ti ti-logout"></i>
                 <span>Logout</span>
               </a>
