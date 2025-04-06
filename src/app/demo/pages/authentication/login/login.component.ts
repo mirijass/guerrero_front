@@ -19,6 +19,9 @@ export default class LoginComponent {
     password: ''
   };
 
+  mostrarPassword: boolean = false;
+
+
   usuario: any = null;
   jwtService = inject(JwtService);
   
@@ -34,6 +37,11 @@ export default class LoginComponent {
     }
 
   }
+
+  togglePasswordVisibility(): void {
+    this.mostrarPassword = !this.mostrarPassword;
+  }
+
 
   onSubmit(): void {
     const payload = { ...this.loginData };
