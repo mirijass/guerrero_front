@@ -12,6 +12,8 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 export class InicioComponent {
 
   categorias: any[] = [];
+  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
+
 
   constructor(private categoriaService: CategoriaService, private router: Router) {}
 

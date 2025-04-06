@@ -1,0 +1,29 @@
+.carousel-caption h3 {
+    color: black !important; /* Cambia el color del título a negro */
+  }
+  
+  .carousel-caption p {
+    color: black !important; /* Cambia el color del texto a negro */
+  }
+
+
+.picsum-img-wrapper img {
+    width: 100%; /* Hace que la imagen ocupe todo el ancho */
+    height: auto; /* Mantiene la proporción de la imagen */
+    object-fit: contain; /* Asegura que la imagen cubra el contenedor */
+    background-color: rgb(255, 255, 255); /* Opcional: agrega un fondo para las áreas vacías */
+
+}
+
+.small-carousel .picsum-img-wrapper {
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho */
+    height: 300px; /* Define una altura fija para las imágenes */
+    overflow: hidden; /* Oculta cualquier contenido que se salga del contenedor */
+  }
+  
+  .small-carousel .picsum-img-wrapper img {
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+    height: 100%; /* Asegura que la imagen ocupe toda la altura del contenedor */
+    object-fit: contain; /* Ajusta la imagen para que cubra el contenedor sin deformarse */
+    background-color: rgb(255, 255, 255); /* Opcional: agrega un fondo para las áreas vacías */
+  }
