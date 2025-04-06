@@ -48,7 +48,7 @@
                 <ng-container matColumnDef="acciones">
                   <th mat-header-cell *matHeaderCellDef>Acciones</th>
                   <td mat-cell *matCellDef="let item">
-                    <button mat-icon-button color="warn" (click)="eliminarProducto(item.cveCarrito, item.cveProducto)">
+                    <button mat-icon-button color="warn" (click)="eliminarProducto(item.cveUsuario, item.cveProducto)">
                       <mat-icon>delete</mat-icon>
                     </button>
                   </td>
@@ -89,6 +89,14 @@
               </table>
             </div>
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-sm-12 text-end">
+              <h5>Subtotal: {{ calcularSubtotal() | currency }}</h5>
+              <h4>Envio: {{ calcularEnvio() | currency }}</h4>
+              <h4>Total: {{ calcularTotal() | currency }}</h4>
+            </div>
           </div>
 
           <div class="example-button-row text-end mt-3">

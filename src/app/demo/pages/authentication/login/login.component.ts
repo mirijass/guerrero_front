@@ -42,7 +42,7 @@ export default class LoginComponent {
       next: (response: any) => {
         console.log('Inicio de sesión exitoso:', response);
         localStorage.setItem('token', response.token); // Guardar el token en el almacenamiento local
-        this.toastService.show('Inicio de sesión exitoso');
+        this.toastService.showSuccess('Inicio de sesión exitoso');
         let usuario = this.jwtService.decodificarToken(response.token);
         if(usuario.rol.clave==1){
           this.router.navigate(['/admin/productos']); // Redirigir al dashboard o página principal
@@ -53,7 +53,7 @@ export default class LoginComponent {
       },
       error: (error) => {
         console.error('Error en el inicio de sesión:', error);
-        this.toastService.show('Usuario o contraseña incorrectos');
+        this.toastService.showDanger('Usuario o contraseña incorrectos');
       }
     });
   }

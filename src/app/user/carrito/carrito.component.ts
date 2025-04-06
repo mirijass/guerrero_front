@@ -1,4 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ICreateOrderRequest, IPayPalConfig, NgxPayPalModule } from 'ngx-paypal';
 import { CarritoService } from 'src/app/theme/shared/service/carrito.service';
@@ -27,6 +29,9 @@ export class CarritoComponent {
 
   mostrarPayPal: boolean = false; // Controla la visibilidad del componente PayPal
 
+  //Paginador
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   
 
   constructor(private carritoService: CarritoService, private  jwtService: JwtService) {
@@ -39,6 +44,12 @@ export class CarritoComponent {
     this.cargarCarrito();
     this.initConfig();
 
+  }
+
+  
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   cargarCarrito(): void {
@@ -63,6 +74,7 @@ export class CarritoComponent {
         console.log(`Cantidad del producto ${item.producto.cveProducto} actualizada a ${item.cantidad}`);
         this.toastService.showSuccess('Cantidad actualizada correctamente');
         this.cargarCarrito();
+        this.mostrarPayPal = false 
       },
       error: (error) => {
         console.error('Error al actualizar la cantidad:', error);
@@ -73,8 +85,8 @@ export class CarritoComponent {
   }
 
 
-  eliminarProducto(cveCarrito: number, cveProducto): void {
-    this.carritoService.eliminarProductoDelCarrito(cveCarrito, cveProducto).subscribe(() => {
+  eliminarProducto(cveUsuario: number, cveProducto): void {
+    this.carritoService.eliminarProductoDelCarrito(cveUsuario, cveProducto).subscribe(() => {
       this.cargarCarrito();
     });
   }
@@ -106,9 +118,9 @@ export class CarritoComponent {
           },
         }));
   
-        const total = this.dataSource.data.reduce((sum: number, item: any) => {
-          return sum + item.cantidad * item.producto.precio;
-        }, 0);
+        const subtotal = this.calcularSubtotal();
+        const envio = this.calcularEnvio();
+        const total = subtotal + envio;
   
         return <ICreateOrderRequest>{
           intent: 'CAPTURE',
@@ -120,7 +132,11 @@ export class CarritoComponent {
                 breakdown: {
                   item_total: {
                     currency_code: 'MXN',
-                    value: total.toFixed(2),
+                    value: subtotal.toFixed(2),
+                  },
+                  shipping: {
+                    currency_code: 'MXN',
+                    value: envio.toFixed(2),
                   },
                 },
               },
@@ -174,6 +190,23 @@ export class CarritoComponent {
         this.toastService.showDanger('Error al finalizar la compra.');
       },
     });
+  }
+  
+  calcularSubtotal(): number {
+    return this.dataSource.data.reduce((subtotal, item) => {
+      return subtotal + (item.cantidad * item.producto.precio);
+    }, 0);
+  }
+  
+  calcularTotal(): number {
+    const subtotal = this.calcularSubtotal();
+    const envio = this.calcularEnvio();
+    return subtotal + envio;
+  }
+
+  calcularEnvio(): number {
+    const subtotal = this.calcularSubtotal();
+    return subtotal >= 500 ? 0 : 50; // Envío gratuito si el subtotal es mayor o igual a $500
   }
 
 }

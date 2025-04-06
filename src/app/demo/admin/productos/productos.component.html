@@ -9,9 +9,23 @@
             <input matInput (keyup)="applyFilter($event)" placeholder="Valor" #input>
           </mat-form-field>
         </div>
+
+        <div class="col-sm-6 text-start">
+          <mat-form-field class="w-100">
+            <mat-label>Seleccionar Categoría</mat-label>
+            <mat-select [(value)]="categoriaSeleccionada" (selectionChange)="filtrarPorCategoria($event.value)">
+              <mat-option [value]="null">
+                Todas las categorías
+              </mat-option>
+              <mat-option *ngFor="let categoria of categorias" [value]="categoria.cveCategoria">
+                {{ categoria.descripcion }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       
         <!-- Columna para el botón alineado a la derecha -->
-        <div class="col-sm-6 text-end">
+        <div class="col-sm-6 text-start">
           <button class="btn btn-outline-primary" (click)="openProductModal()">Agregar producto</button>
         </div>
       </div>

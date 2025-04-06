@@ -47,16 +47,16 @@ export default class RegisterComponent {
       this.http.post('http://localhost:3000/carrito/usuario', payload).subscribe({
         next: (response) => {
           console.log('Registro exitoso:', response);
-          this.toastService.show('Registro exitoso');
+          this.toastService.showSuccess('Registro exitoso');
           this.router.navigate(['/login']); // Redirigir al login
         },
         error: (error) => {
           console.error('Error en el registro:', error);
-          this.toastService.show('Ocurrió un error durante el registro');
+          this.toastService.showSuccess('Ocurrió un error durante el registro');
         }
       });
     } else {
-      this.toastService.show('Debes aceptar los términos y condiciones');
+      this.toastService.showDanger('Debes aceptar los términos y condiciones');
     }
   }
 

@@ -14,6 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ToastService } from 'src/app/theme/shared/service/toast.service';
+import { CategoriaService } from 'src/app/theme/shared/service/categoria.service';
 
 @Component({
   selector: 'app-productos',
@@ -27,6 +28,10 @@ export default class ProductosComponent{
 
   // Datos de ejemplo para la tabla
   dataSource= new MatTableDataSource([]); // Inicializar dataSource como un nuevo MatTableDataSource vacío
+  productos: any[] = [];
+  categorias: any[] = [];
+  categoriaSeleccionada: number | null = null;
+
 
   imagenSeleccionada: string | null = null; // Variable para almacenar la imagen seleccionada
 
@@ -38,16 +43,30 @@ export default class ProductosComponent{
 
   // Inyección del servicio en el constructor
   constructor(private productosService: ProductosService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private categoriaService: CategoriaService
   ) {}
 
   ngOnInit(): void {
     this.getProductos();
+    this.cargarCategorias();
+
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  cargarCategorias(): void {
+    this.categoriaService.listarCategoriasActivas().subscribe({
+      next: (data) => {
+        this.categorias = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    });
   }
 
   // Consumir service
@@ -86,6 +105,10 @@ export default class ProductosComponent{
           }
           return producto;
         });
+
+        this.productos = this.dataSource.data; // Asigna los productos al dataSource
+
+
       },
       error: (error) => {
         this.toastService.showDanger(error);
@@ -206,6 +229,14 @@ export default class ProductosComponent{
 
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
+      }
+    }
+
+    filtrarPorCategoria(cveCategoria: number): void {
+      if (cveCategoria) {
+        this.dataSource.data = this.productos.filter(producto => producto.categoria.cveCategoria === cveCategoria);
+      } else {
+        this.dataSource.data = this.productos; // Mostrar todos los productos si no hay categoría seleccionada
       }
     }
 
