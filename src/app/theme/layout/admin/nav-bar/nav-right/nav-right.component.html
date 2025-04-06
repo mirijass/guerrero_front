@@ -9,34 +9,20 @@
           href="javascript:"
           ngbDropdownToggle
         >
-          <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
           <span>
             <i class="ti ti-settings"></i>
           </span>
         </a>
         <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
           <div class="dropdown-header">
-            <h4>
-              Good Morning,
-              <span class="small text-muted">John Doe</span>
-            </h4>
-            <p class="text-muted">Project Admin</p>
 
             <hr />
             <ng-scrollbar style="height: calc(100vh - 280px)" visibility="hover">
 
               <hr />
-              <a [routerLink]="['/register']" class="dropdown-item">
-                <i class="ti ti-settings"></i>
-                <span>Account Profile</span>
-              </a>
-              <a href="javascript:" class="dropdown-item">
-                <i class="ti ti-user"></i>
-                <span>Social Profile</span>
-              </a>
               <a (click)="cerrarSesion()" class="dropdown-item">
                 <i class="ti ti-logout"></i>
-                <span>Logout</span>
+                <span>cerrar sesión</span>
               </a>
             </ng-scrollbar>
           </div>
